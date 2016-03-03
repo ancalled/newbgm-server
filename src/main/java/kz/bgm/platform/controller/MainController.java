@@ -1,6 +1,7 @@
 package kz.bgm.platform.controller;
 
 import kz.bgm.platform.model.MusicRec;
+import utils.Utils;
 import kz.bgm.platform.model.MusicRecResp;
 import kz.bgm.platform.service.UploadAudioService;
 import kz.bgm.platform.service.impl.MainServiceImpl;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 
@@ -57,12 +59,22 @@ public class MainController {
     }
 
     @RequestMapping(value = "/music-rec", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public @ResponseBody
-    MusicRecResp musicRec(@RequestBody MusicRec req) {
-        log.info("Got music-rec request:" + req.toString());
-        mainService.createRecord(req);
+    public
+    @ResponseBody
+    MusicRecResp musicRec(HttpServletRequest request) {
         MusicRecResp resp = new MusicRecResp();
-        resp.setCustomer(req.getCustomer());
+        try {
+            String bodyString = Utils.toString(request.getInputStream());
+            log.info("Got music-rec request:" + bodyString);
+            MusicRec musicReq = (MusicRec) Utils.fromJsonWithDate(bodyString, MusicRec.class);
+            Utils.checkNotNull(musicReq, "POST data is empty");
+            Utils.checkParameterNotNull(musicReq.getCustomer(), "customer");
+            Utils.checkParameterNotNull(musicReq.getMusic(), "music");
+            mainService.createRecord(musicReq);
+            resp.setCustomer(musicReq.getCustomer());
+        } catch (Exception ex) {
+            resp.setError(ex.getMessage());
+        }
         return resp;
     }
 
