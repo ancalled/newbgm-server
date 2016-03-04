@@ -17,20 +17,30 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 @RequestMapping("/")
 public class MainController {
 
     @Autowired
-    private MainServiceImpl mainService;
+    private MainServiceImpl service;
 
     @Autowired
     private UploadAudioService uploadAudioService;
 
     private static final Logger log = Logger.getLogger(MainController.class);
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = GET)
+    public String showMerchants(ModelMap model) {
+        List<MusicRec> musicRecs = service.listMusicReq();
+        model.addAttribute("musicRecs", musicRecs);
+        return "index";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "upload")
     public ModelAndView main() {
         ModelAndView model = new ModelAndView();
         model.setViewName("upload");
@@ -70,7 +80,7 @@ public class MainController {
             Utils.checkNotNull(musicReq, "POST data is empty");
             Utils.checkParameterNotNull(musicReq.getCustomer(), "customer");
             Utils.checkParameterNotNull(musicReq.getMusic(), "music");
-            mainService.createRecord(musicReq);
+            service.createRecord(musicReq);
             resp.setCustomer(musicReq.getCustomer());
         } catch (Exception ex) {
             resp.setError(ex.getMessage());

@@ -6,13 +6,18 @@ import kz.bgm.platform.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class MainServiceImpl implements MainService {
@@ -24,6 +29,12 @@ public class MainServiceImpl implements MainService {
         this.db = new JdbcTemplate(dataSource);
     }
 
+    @Override
+    public List<MusicRec> listMusicReq() {
+        return db.query("SELECT * FROM musicrec", new MusicRecMapper());
+    }
+
+    @Override
     public long createRecord(MusicRec musicRec) {
         String insert = "INSERT INTO musicrec (customer, acrid, title, label, duration, releaseDate, " +
                 "album, genres, artists, playOffset, isrcCode, upcCode, recDate) " +
@@ -49,5 +60,38 @@ public class MainServiceImpl implements MainService {
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
+    }
+
+    private static class MusicRecMapper implements RowMapper<MusicRec> {
+        @Override
+        public MusicRec mapRow(ResultSet rs, int i) throws SQLException {
+            MusicRec musicRec = new MusicRec();
+            musicRec.setCustomer(rs.getString("customer"));
+            musicRec.setRecDate(rs.getTimestamp("recDate"));
+
+            Music music = new Music();
+            music.setAcrid(rs.getString("acrid"));
+            music.setTitle(rs.getString("title"));
+            music.setLabel(rs.getString("label"));
+            music.setDuration(rs.getLong("duration"));
+            music.setReleaseDate(rs.getDate("releaseDate"));
+            music.setAlbum(rs.getString("album"));
+
+            String genres = rs.getString("genres");
+            if (genres != null) {
+                music.setGenres(Arrays.asList(genres.split(" , ")));
+            }
+
+            String artists = rs.getString("artists");
+            if (artists != null) {
+                music.setArtists(Arrays.asList(artists.split(",")));
+            }
+            music.setPlayOffset(rs.getLong("playOffset"));
+            music.setIsrcCode(rs.getString("isrcCode"));
+            music.setUpcCode(rs.getString("upcCode"));
+            musicRec.setMusic(music);
+
+            return musicRec;
+        }
     }
 }
