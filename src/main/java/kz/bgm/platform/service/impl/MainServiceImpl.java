@@ -49,10 +49,10 @@ public class MainServiceImpl implements MainService {
             ps.setString(3, music.getTitle());
             ps.setString(4, music.getLabel());
             ps.setLong(5, music.getDuration());
-            ps.setDate(6, new java.sql.Date(music.getReleaseDate().getTime()));
+            ps.setDate(6, music.getReleaseDate() != null ? new java.sql.Date(music.getReleaseDate().getTime()) : null);
             ps.setString(7, music.getAlbum());
-            ps.setString(8, String.join(", ", music.getGenres()));
-            ps.setString(9, String.join(", ", music.getArtists()));
+            ps.setString(8, music.getGenres() != null ? String.join(", ", music.getGenres()) : null);
+            ps.setString(9, music.getArtists() != null ? String.join(", ", music.getArtists()) : null);
             ps.setLong(10, music.getPlayOffset());
             ps.setString(11, music.getIsrcCode());
             ps.setString(12, music.getUpcCode());
