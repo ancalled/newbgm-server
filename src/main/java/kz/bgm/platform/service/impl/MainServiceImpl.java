@@ -31,12 +31,12 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public List<MusicRec> listMusicReq() {
-        return db.query("SELECT * FROM musicrec", new MusicRecMapper());
+        return db.query("SELECT * FROM MUSICREC", new MusicRecMapper());
     }
 
     @Override
     public long createRecord(MusicRec musicRec) {
-        String insert = "INSERT INTO musicrec (customer, acrid, title, label, duration, releaseDate, " +
+        String insert = "INSERT INTO MUSICREC (customer, acrid, title, label, duration, releaseDate, " +
                 "album, genres, artists, playOffset, isrcCode, upcCode, recDate) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
