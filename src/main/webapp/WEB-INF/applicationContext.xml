@@ -1,0 +1,35 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <import resource="spring-security.xml"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="kz.bgm.platform.service"/>
+    <context:property-placeholder location="classpath:app.properties" />
+
+    <bean id="bgmDS" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="accessToUnderlyingConnectionAllowed" value="true"/>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10000000"/>
+    </bean>
+
+    <bean id="uploadAudio" class="kz.bgm.platform.service.UploadAudioService">
+        <constructor-arg name="accessKey" value="${acr.console.accessKey}"/>
+        <constructor-arg name="accessSecret" value="${acr.console.accessSecret}"/>
+        <constructor-arg name="bucketName" value="${acr.bucket.name}"/>
+    </bean>
+
+    <bean id="acrConfig" class="kz.bgm.platform.model.AcrConfig">
+        <constructor-arg name="host" value="${acr.host}"/>
+        <constructor-arg name="accessKey" value="${acr.accessKey}"/>
+        <constructor-arg name="accessSecret" value="${acr.accessSecret}"/>
+    </bean>
+</beans>

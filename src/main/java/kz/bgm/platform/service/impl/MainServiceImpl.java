@@ -2,6 +2,7 @@ package kz.bgm.platform.service.impl;
 
 import kz.bgm.platform.model.Music;
 import kz.bgm.platform.model.MusicRec;
+import kz.bgm.platform.model.User;
 import kz.bgm.platform.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +28,19 @@ public class MainServiceImpl implements MainService {
     @Autowired
     public void setScheduleDataSource(@Qualifier("bgmDS") DataSource dataSource) {
         this.db = new JdbcTemplate(dataSource);
+    }
+
+    @Override
+    public User getUser(String username) {
+        List<User> users = db.query("SELECT * FROM USERS WHERE username=?", (rs, i) -> {
+            User user = new User();
+            user.setId(rs.getLong("id"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
+            return user;
+        }, username);
+
+        return users != null && !users.isEmpty() ? users.get(0) : null;
     }
 
     @Override

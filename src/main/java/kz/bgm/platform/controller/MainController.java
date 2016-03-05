@@ -1,20 +1,18 @@
 package kz.bgm.platform.controller;
 
 import kz.bgm.platform.model.MusicRec;
-import utils.Utils;
-import kz.bgm.platform.model.MusicRecResp;
 import kz.bgm.platform.service.UploadAudioService;
 import kz.bgm.platform.service.impl.MainServiceImpl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -34,10 +32,26 @@ public class MainController {
     private static final Logger log = Logger.getLogger(MainController.class);
 
     @RequestMapping(method = GET)
-    public String showMerchants(ModelMap model) {
+    public String showRecs(ModelMap model) {
         List<MusicRec> musicRecs = service.listMusicReq();
         model.addAttribute("musicRecs", musicRecs);
         return "index";
+    }
+
+    @RequestMapping(value = "/auth", method = RequestMethod.GET)
+    public ModelAndView login(
+            @RequestParam(value = "error", required = false) String error,
+            @RequestParam(value = "logout", required = false) String logout) {
+        ModelAndView model = new ModelAndView();
+        if (error != null) {
+            model.addObject("error", "Invalid username and password!");
+        }
+
+        if (logout != null) {
+            model.addObject("msg", "You've been logged out successfully.");
+        }
+        model.setViewName("login");
+        return model;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "upload")
@@ -66,26 +80,6 @@ public class MainController {
             model.addAttribute("error", "File is empty.");
         }
         return "upload";
-    }
-
-    @RequestMapping(value = "/music-rec", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public
-    @ResponseBody
-    MusicRecResp musicRec(HttpServletRequest request) {
-        MusicRecResp resp = new MusicRecResp();
-        try {
-            String bodyString = Utils.toString(request.getInputStream());
-            log.info("Got music-rec request:" + bodyString);
-            MusicRec musicReq = (MusicRec) Utils.fromJsonWithDate(bodyString, MusicRec.class);
-            Utils.checkNotNull(musicReq, "POST data is empty");
-            Utils.checkParameterNotNull(musicReq.getCustomer(), "customer");
-            Utils.checkParameterNotNull(musicReq.getMusic(), "music");
-            service.createRecord(musicReq);
-            resp.setCustomer(musicReq.getCustomer());
-        } catch (Exception ex) {
-            resp.setError(ex.getMessage());
-        }
-        return resp;
     }
 
     public File convert(MultipartFile multipart) throws IOException {

@@ -20,7 +20,7 @@
                 <tr>
                     <td>Customer</td>
                     <td>Request time</td>
-                    <td>Acr id</td>
+                    <%--<td>Acr id</td>--%>
                     <td>Title</td>
                     <td>Label</td>
                     <td>Duration</td>
@@ -28,7 +28,7 @@
                     <td>Album</td>
                     <td>Genres</td>
                     <td>Artists</td>
-                    <td>Play offset</td>
+                    <td>Play offset ms</td>
                     <td>ISRC code</td>
                     <td>UPC code</td>
                 </tr>
@@ -39,7 +39,7 @@
                     <tr>
                         <td>${m.customer}</td>
                         <td>${m.recDate}</td>
-                        <td>${m.music.acrid}</td>
+                        <%--<td>${m.music.acrid}</td>--%>
                         <td>${m.music.title}</td>
                         <td>${m.music.label}</td>
                         <td>${m.music.duration}</td>

@@ -1,6 +1,12 @@
 use bgm;
 DROP TABLE IF EXISTS MUSICREC;
 
+CREATE TABLE USERS (
+  id          INT PRIMARY KEY AUTO_INCREMENT,
+  username    VARCHAR(50),
+  password       VARCHAR(500)
+);
+
 CREATE TABLE MUSICREC (
   id          INT PRIMARY KEY AUTO_INCREMENT,
   customer    VARCHAR(50),
@@ -17,3 +23,4 @@ CREATE TABLE MUSICREC (
   upcCode     VARCHAR(500),
   recDate     TIMESTAMP
 );
+

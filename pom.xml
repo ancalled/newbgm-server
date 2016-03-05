@@ -21,6 +21,7 @@
 
     <properties>
         <spring.version>4.1.1.RELEASE</spring.version>
+        <spring.security.version>4.0.0.RELEASE</spring.security.version>
         <log4j.version>1.2.17</log4j.version>
         <fasterxml.jackson.version>2.6.3</fasterxml.jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,6 +53,33 @@
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>${spring.security.version}</version>
         </dependency>
 
         <!-- servlet -->
