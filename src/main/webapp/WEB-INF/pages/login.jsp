@@ -17,8 +17,7 @@
         </div>
         <div class="panel-body">
             <form name='loginForm' class="form-signin" action="<c:url value='login'/>" method='POST'>
-                <input type="text" name='username' class="form-control" placeholder="Логин" value="${param.login}"
-                       required autofocus>
+                <input type="text" name='username' class="form-control" placeholder="Логин" required autofocus>
                 <input type="password" name='password' class="form-control" placeholder="Пароль" required>
                 <input type="hidden" name="authType" value="merchant">
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
