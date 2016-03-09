@@ -27,9 +27,8 @@ public class CustomerApi {
 
     private static final Logger log = Logger.getLogger(MainController.class);
 
-    @RequestMapping(value = "/getAcrData", method = RequestMethod.GET)
+    @RequestMapping(value = "/acr-data", method = RequestMethod.GET)
     public @ResponseBody AcrConfig musicRec() {
-//        Authorization: Basic aXNsYW06MTIz
         return acrConfig;
     }
 
