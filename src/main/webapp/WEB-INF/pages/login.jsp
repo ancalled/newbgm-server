@@ -16,7 +16,7 @@
             <h4 class="text-center">Войдите, чтобы перейти к Metashake</h4>
         </div>
         <div class="panel-body">
-            <form name='loginForm' class="form-signin" action="<c:url value='login'/>" method='POST'>
+            <form name='loginForm' class="form-signin" action="<c:url value='/login'/>" method='POST'>
                 <input type="text" name='username' class="form-control" placeholder="Логин" required autofocus>
                 <input type="password" name='password' class="form-control" placeholder="Пароль" required>
                 <input type="hidden" name="authType" value="merchant">

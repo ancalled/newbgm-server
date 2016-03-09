@@ -14,11 +14,11 @@
         <security:form-login
                 login-page="/auth"
                 default-target-url="/"
-                authentication-failure-url="/auth"
+                authentication-failure-url="/auth?error"
                 username-parameter="username"
                 password-parameter="password"/>
-        <security:logout logout-success-url="/auth" invalidate-session="true"/>
-        <security:session-management invalid-session-url="/auth"/>
+        <security:logout logout-success-url="/auth?logout" invalidate-session="true"/>
+        <security:session-management invalid-session-url="/auth?logout"/>
         <security:csrf disabled="true"/>
         <security:intercept-url pattern="/**" access="isAuthenticated()"/>
     </security:http>
