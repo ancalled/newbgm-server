@@ -13,7 +13,8 @@
 <body>
 <div class="container">
     <div id="content" class="panel panel-default">
-        <a href="upload">Upload audio</a>
+        <a href="<c:url value="/upload"/>">Upload audio</a>
+        <a href="<c:url value="/logout"/>">Logout</a>
         <div class="panel-body">
             <table class="table table-bordered">
                 <thead>

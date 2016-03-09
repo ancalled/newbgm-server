@@ -31,7 +31,7 @@ public class MainController {
 
     private static final Logger log = Logger.getLogger(MainController.class);
 
-    @RequestMapping(method = GET)
+    @RequestMapping(method = GET, value = "/")
     public String showRecs(ModelMap model) {
         List<MusicRec> musicRecs = service.listMusicReq();
         model.addAttribute("musicRecs", musicRecs);
@@ -54,7 +54,7 @@ public class MainController {
         return model;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "upload")
+    @RequestMapping(method = RequestMethod.GET, value = "/upload")
     public ModelAndView main() {
         ModelAndView model = new ModelAndView();
         model.setViewName("upload");
